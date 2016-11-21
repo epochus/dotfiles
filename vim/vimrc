@@ -1,0 +1,142 @@
+" ============================================================================
+" Jackson Wu's .vimrc
+" ============================================================================
+set nocompatible
+
+" ============================================================================
+" INSTALLED PLUGINS
+" ============================================================================
+
+" Automatically install vim-plug if missing.
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+
+
+" Color Schemes
+Plug 'chriskempson/base16-vim' 
+
+
+call plug#end()
+
+
+" ============================================================================
+" BASIC Configurations
+" ============================================================================
+
+" Set colorscheme.
+if filereadable(expand("~/.vimrc_background"))
+    let base16colorspace=256
+    source ~/.vimrc_background
+endif
+set background=light
+
+" Copy indent from current line when starting new line.
+set autoindent
+
+" Enable backspace in insert-mode.
+set backspace=indent,eol,start
+
+" Remove i from vim search autocomplete.
+set complete-=i
+
+" For html, javascript, and text, set indent to width 2.
+autocmd FileType html setlocal shiftwidth=2 tabstop=2
+autocmd FileType css setlocal shiftwidth=2 tabstop=2
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+autocmd FileType text setlocal shiftwidth=2 tabstop=2
+
+" Set default indent to width 4.
+set shiftwidth=4
+set tabstop=4" Use spaces instead of tab.
+set expandtab
+
+" Auto change working directory to inherit from current file (set autochdir).
+autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
+
+" Enable unicode encoding.
+set encoding=utf-8
+" Remove octal number format recognition (for 00, 01,...).
+set nrformats-=octal
+
+" Do timeout on terminal key codes.
+set ttimeout
+" Timeout after 100ms.
+set ttimeoutlen=100
+
+" Allow leaving/switching modified buffers.
+set hidden
+
+" Start incremental searching before <enter>.
+set incsearch
+
+" Always enable status line.
+set laststatus=2
+" Show info about current cmd on status line.
+set showcmd
+" Show visual feedback in status.
+set showmode
+
+" Enable command line completion to expand to menu.
+set wildmenu
+" Ignore some file extensions with <TAB> completion.
+set wildignore=*.swp,*.bak,*.pyc,*.class
+
+" Add line numbers.
+set number
+" Set column highlight at 80 char.
+set colorcolumn=80
+
+" Always show line(s) above/below cursor.
+if !&scrolloff
+    set scrolloff=1
+endif
+if !&sidescrolloff
+    set sidescrolloff=5
+endif
+" Display as many lines as possible.
+set display+=lastline
+
+" Makes :set list (visible whitespace) prettier.
+if &listchars ==# 'eol:$'
+    set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
+" Auto read file again if changed outside of vim.
+set autoread
+" Support mac file formats.
+set fileformats+=mac
+
+" Remember 1000 search history and command entries.
+set history=1000
+" Set larger (1000 levels) undo buffer.
+set undolevels=1000
+" Set max number of tabs.
+if &tabpagemax < 20
+    set tabpagemax=20
+endif
+" Save global variables.
+if !empty(&viminfo)
+    set viminfo^=!
+endif
+" Do not store current options in session.
+set sessionoptions-=options
+
+
+" ============================================================================
+" KEY MAPPINGS
+" ============================================================================
+
+" Toggle paste mode.
+nnoremap <F8> :set invpaste paste?<CR>
+set pastetoggle=<F8>
+
+" Avoid accidental <C-U> (cannot undo delete)
+inoremap <C-U> <C-G>u<C-U>
+
+" Mappings for opening files in tabs.
+command -nargs=1 -complete=file TT tabfind <args>
