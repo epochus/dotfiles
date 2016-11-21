@@ -19,61 +19,13 @@ prompt() {
                 PROMPT_DIRTRIM=4
             fi
 
-            local color_prompt
-            if [[ -x /usr/bin/tput ]] && tput setaf 1 >&/dev/null; then
-                # We have color support; assume it's compliant with Ecma-48
-                # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-                # a case would tend to support setf rather than setaf.)
-                color_prompt=yes
-            else
-                color_prompt=
-            fi
-
-            # Format prompt depending on color support.
-            if [[ $color_prompt = 'yes' ]]; then
-            #     local -i colors=$( {
-            #         tput Co || tput colors
-            #     } 2>/dev/null )
-            #     local reset=$( {
-            #         tput me || tput sgr0
-            #     } 2>/dev/null )
-
-            #     # Determine how many colors are supported.
-            #     if ((colors == 256)) ; then
-            #         local green=$(tput setaf 47 2>/dev/null)
-            #         local red=$(tput setaf 196 2>/dev/null)
-            #         local purple=$(tput setaf 141 2>/dev/null)
-            #         local blue=$(tput setaf 39 2>/dev/null)
-            #     elif ((colors == 8)) ; then
-            #         local green=$( {
-            #             tput setaf 2 || tput bold || tput md
-            #         } 2>/dev/null )
-            #         local red=$( {
-            #             tput setaf 1 || tput bold || tput md
-            #         } 2>/dev/null )
-            #         local purple=$( {
-            #             tput setaf 5 || tput bold || tput md
-            #         } 2>/dev/null)
-            #         local blue=$( {
-            #             tput setaf 4 || tput bold || tput md
-            #         } 2>/dev/null)
-            #     fi
-                # Lowercase names. 
-                # local username=$(whoami | tr '[:upper:]' '[:lower:]')
-                # local username=$(whoami)
-                # local format='[\['"$green"'\]'"$username"'@\h\['"$reset"'\]:\['"$blue"'\]\w\['$reset'\]]'
-
-                # PS1="$format"'\['"$purple"'\]$(prompt git)\['"$reset"'\]\['"$red"'\]$(prompt job)\['"$reset"'\]\n\$ '
-                PS1='[\h:\w] $(prompt git)$(prompt job)\$ '
-            else
-                PS1='[\h:\w\]$ '
-            fi
+            PS1='[\u@\h:\w\]]$(prompt git)$(prompt job)$ '
             ;;
 
         # Revert to simple inexpensive prompt.
         off)
             unset -v PROMPT_COMMAND PROMPT_DIRTRIM
-            PS1='\$ '
+            PS1='[[\u@\h:\w\]]$ '
             ;;
 
         git)
