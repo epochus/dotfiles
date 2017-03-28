@@ -17,7 +17,7 @@
 # Check for Bash (>2.0).
 if [ ! "$BASH_VERSINFO" ] ; then
     return
-
+fi
 
 while getopts Abetv name
 do
@@ -137,3 +137,4 @@ if [[ -n $vim_opt ]] ; then
 fi
 
 unset config_repo_path
+
